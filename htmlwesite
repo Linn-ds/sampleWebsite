@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customize Your Furniture</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            padding: 20px;
+        }
+
+        .customization-panel {
+            width: 25%;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .customization-panel h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .options {
+            margin-bottom: 15px;
+        }
+
+        .options label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        .preview-area {
+            flex: 1;
+            margin-left: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        canvas {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border: 1px solid #ddd;
+        }
+
+        .cost-calculator {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        footer {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Customize Your Furniture</h1>
+    </header>
+
+    <div class="container">
+        <div class="customization-panel">
+            <h2>Options</h2>
+            <div class="options">
+                <label>
+                    Material:
+                    <select id="material">
+                        <option value="corn-cob">Corn Cob Wood</option>
+                        <option value="recycled-plastic">Recycled Plastic</option>
+                    </select>
+                </label>
+                <label>
+                    Color:
+                    <input type="color" id="color-picker" value="#A78B71">
+                </label>
+                <label>
+                    Size:
+                    <select id="size">
+                        <option value="small">Small</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="large">Large</option>
+                    </select>
+                </label>
+            </div>
+            <button onclick="updatePreview()">Apply Changes</button>
+        </div>
+
+        <div class="preview-area">
+            <canvas id="furniturePreview"></canvas>
+            <div class="cost-calculator">
+                Estimated Cost: <span id="cost">$150</span>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2024 Modular Furniture Co. All rights reserved.
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('furniturePreview');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 600;
+        canvas.height = 400;
+
+        function drawFurniture(material, color, size) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Base Table Representation
+            ctx.fillStyle = color;
+
+            let width, height;
+            switch (size) {
+                case 'small':
+                    width = 150;
+                    height = 100;
+                    break;
+                case 'medium':
+                    width = 250;
+                    height = 150;
+                    break;
+                case 'large':
+                    width = 350;
+                    height = 200;
+                    break;
+            }
+
+            ctx.fillRect(
+                (canvas.width - width) / 2,
+                (canvas.height - height) / 2,
+                width,
+                height
+            );
+
+            ctx.fillStyle = 'black';
+            ctx.font = '16px Arial';
+            ctx.fillText(
+                material,
+                (canvas.width - width) / 2 + 10,
+                (canvas.height - height) / 2 + 20
+            );
+        }
+
+        function updatePreview() {
+            const material = document.getElementById('material').value;
+            const color = document.getElementById('color-picker').value;
+            const size = document.getElementById('size').value;
+
+            drawFurniture(material, color, size);
+
+            // Update Cost
+            const cost = size === 'small' ? 100 : size === 'medium' ? 150 : 200;
+            document.getElementById('cost').innerText = `$${cost}`;
+        }
+
+        // Initial render
+        updatePreview();
+    </script>
+</body>
+</html>
